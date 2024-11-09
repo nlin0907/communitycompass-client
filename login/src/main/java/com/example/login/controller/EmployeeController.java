@@ -11,7 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "api/employee")
 @AllArgsConstructor
-@CrossOrigin(origins = "http://192.168.56.1:3000")
+@CrossOrigin(origins = "*")
 public class EmployeeController {
 
     @Autowired
