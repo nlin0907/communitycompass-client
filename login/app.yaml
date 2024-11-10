@@ -1,0 +1,19 @@
+runtime: java17
+instance_class: F2
+env: standard
+
+automatic_scaling:
+  target_cpu_utilization: 0.65
+  min_instances: 1
+  max_instances: 5
+
+env_variables:
+  SPRING_DATASOURCE_URL: jdbc:mysql://google/clientlogindb?cloudSqlInstance=clientapp-441220:us-east4:clientlogindb&socketFactory=com.google.cloud.sql.mysql.SocketFactory
+  SPRING_DATASOURCE_USERNAME: root
+  SPRING_DATASOURCE_PASSWORD: root
+  JAVA_HOME: "/usr/lib/jvm/java-17-openjdk"
+
+handlers:
+  - url: /.*
+    script: auto
+
