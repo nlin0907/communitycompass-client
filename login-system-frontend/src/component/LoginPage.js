@@ -7,6 +7,7 @@ function LoginPage({ onLogin }) {
 
   const handleLogin = async () => {
     try {
+      // TODO: have the url render to the admin home page or general homepage; localhost will not work in the future when we deploy
       const url = `http://localhost:9090/api/employee/get?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
       const response = await axios.get(url);
       const userData = response.data;

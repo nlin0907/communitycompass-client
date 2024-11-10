@@ -1,0 +1,108 @@
+/* Tab Buttons */
+.tab-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+  }
+  
+  .tab-buttons button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #f0f2f5;
+    color: #4F46E5;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .tab-buttons button.active {
+    background-color: #4F46E5;
+    color: white;
+  }
+  
+  .tab-buttons button:hover {
+    background-color: #dfe3ea;
+  }
+  
+  /* Other Styling (form container, input fields, etc.) */
+  .form-container {
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 25px;
+  }
+  
+  .form-container h2 {
+    color: #4F46E5;
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+  
+  .form-container input,
+  .form-container select,
+  .form-container textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #dcdfe6;
+    border-radius: 5px;
+    font-size: 1rem;
+  }
+  
+  .output-data {
+    background-color: #ffffff;
+    border: 1px solid #dcdfe6;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    margin-top: 20px;
+    font-size: 0.95rem;
+    color: #333;
+    white-space: pre-wrap;
+    text-align: left;
+  }
+
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px; /* Space between the buttons */
+    margin-top: 15px;
+  }
+  
+  .button-group button {
+    flex: 1;
+    padding: 12px 0; /* Adjusts the height for consistency */
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Add specific styles for each button */
+  .button-group button:first-child {
+    background-color: #4F46E5;
+    color: white;
+    border: none;
+  }
+  
+  .button-group button:first-child:hover {
+    background-color: #3c38a8;
+  }
+  
+  .button-group button:last-child {
+    background-color: #e3342f;
+    color: white;
+    border: none;
+  }
+  
+  .button-group button:last-child:hover {
+    background-color: #cc1f1a;
+  }
+  
+  

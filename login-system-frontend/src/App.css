@@ -30,64 +30,57 @@ body {
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   padding: 2rem;
   text-align: center;
+  width: 100%;
+  max-width: 400px;
 }
 
 .login-container h2 {
-  font-size: 1.25rem;
-  line-height: 1.75rem;
+  font-size: 1.5rem;
   font-weight: 600;
-  color: #000;
-  margin-bottom: 1rem;
+  color: #333;
+  margin-bottom: 1.5rem;
 }
 
 .input-container {
   position: relative;
-}
-
-.input-label {
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  margin-bottom: 0.25rem;
-  color: #333;
-  text-align: left;
+  margin-bottom: 1rem;
 }
 
 .input-container input {
   background-color: #fff;
-  padding: 1rem;
-  padding-right: 3rem;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  width: 300px;
+  padding: 0.75rem;
+  font-size: 1rem;
+  width: 100%;
   border-radius: 0.5rem;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   outline: none;
   border: 1px solid #e5e7eb;
-  margin: 8px 0;
 }
 
 .login-button {
   display: block;
-  padding-top: 0.75rem;
-  padding-bottom: 0.75rem;
-  padding-left: 1.25rem;
-  padding-right: 1.25rem;
+  padding: 0.75rem;
   background-color: #4F46E5;
   color: #ffffff;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
+  font-size: 1rem;
   font-weight: 500;
-  width: 300px; 
+  width: 100%;
   border-radius: 0.5rem;
   text-transform: uppercase;
   border: none;
   cursor: pointer;
+  margin-top: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+  background-color: #4338ca;
 }
 
 .registration-link {
   text-align: center;
-  margin-top: 15px;
-  font-size: 14px;
+  margin-top: 1.5rem;
+  font-size: 0.875rem;
 }
 
 .registration-link a {
@@ -97,4 +90,25 @@ body {
 
 .registration-link a:hover {
   text-decoration: underline;
+}
+
+/* Radio Button Styling */
+.radio-group {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.radio-group label {
+  font-size: 0.875rem;
+  color: #333;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.radio-group input[type="radio"] {
+  accent-color: #4F46E5; /* Changes radio button color */
+  margin-right: 0.5rem;
 }
