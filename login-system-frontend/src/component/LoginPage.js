@@ -4,14 +4,16 @@ import axios from 'axios';
 function LoginPage({ onLogin }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [role, setRole] = useState('general');
 
   const handleLogin = async () => {
     try {
       const url = `http://localhost:9090/api/employee/get?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
       const response = await axios.get(url);
       const userData = response.data;
-      onLogin(userData);
 
+      // Add the selected role to userData
+      onLogin({ ...userData, role });
     } catch (error) {
       console.error('Login error:', error);
     }
@@ -27,9 +29,29 @@ function LoginPage({ onLogin }) {
         <div className="input-container">
           <input type="password" placeholder="Enter password" value={password} onChange={(e) => setPassword(e.target.value)} />
         </div>
-        <button className = "login-button" type = "button"onClick={handleLogin}>Login</button>
+        <div className="role-selection">
+          <label>
+            <input
+              type="radio"
+              value="general"
+              checked={role === 'general'}
+              onChange={(e) => setRole(e.target.value)}
+            />
+            General
+          </label>
+          <label>
+            <input
+              type="radio"
+              value="admin"
+              checked={role === 'admin'}
+              onChange={(e) => setRole(e.target.value)}
+            />
+            Admin
+          </label>
+        </div>
+        <button className="login-button" type="button" onClick={handleLogin}>Login</button>
       </div>
-      </div>
+    </div>
   );
 }
 

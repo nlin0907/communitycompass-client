@@ -3,7 +3,8 @@ import { BrowserRouter as Router, Link, Routes, Route, useLocation } from 'react
 import './App.css';
 
 import LoginPage from './component/LoginPage';
-import HomePage from './component/HomePage';
+import AdminHome from './component/AdminHome';
+import GeneralHome from './component/GeneralHome';
 import RegistrationPage from './component/RegistrationPage';
 
 function App() {
@@ -27,7 +28,11 @@ function App() {
               !user ? (
                 <LoginPage onLogin={handleLogin} />
               ) : (
-                <HomePage user={user} onLogout={handleLogout} />
+                user.role === 'admin' ? (
+                  <AdminHome user={user} onLogout={handleLogout} />
+                ) : (
+                  <GeneralHome user={user} onLogout={handleLogout} />
+                )
               )
             }
           />
@@ -47,7 +52,7 @@ function AuthLink() {
   const location = useLocation();
   if (location.pathname !== '/register') {
     return (
-      <p class = "registration-link">
+      <p className="registration-link">
         Don't have an account? <Link to="/register">Click here to register</Link>
       </p>
     );
@@ -56,4 +61,3 @@ function AuthLink() {
 }
 
 export default App;
-
