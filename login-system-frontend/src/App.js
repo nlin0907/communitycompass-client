@@ -7,8 +7,10 @@ import AdminHome from './component/AdminHome';
 import GeneralHome from './component/GeneralHome';
 import RegistrationPage from './component/RegistrationPage';
 
+
 function App() {
-  const [user, setUser] = useState('');
+  const [user, setUser] = useState({ firstname: 'Admin', role: 'admin' });
+  // const [user, setUser] = useState('');
 
   const handleLogin = (userData) => {
     setUser(userData);
