@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FaUser } from 'react-icons/fa';
 import './design/GeneralHome.css';
+import {fetchData} from "../utils";
 
 function GeneralHome({ user, onLogout }) {
   const [isUserMenuOpen, setUserMenuOpen] = useState(false);
@@ -29,24 +30,62 @@ function GeneralHome({ user, onLogout }) {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleCreateUser = () => {
-    console.log('Creating user with data:', formData);
+  const handleCreateUser = async () => {
+    console.log('Create User button clicked.');
+    try {
+      const queryParams = new URLSearchParams({
+        name: formData.userName,
+        email: formData.email,
+        age: formData.age,
+        sex: formData.sex,
+        latitude: formData.userLatitude,
+        longitude: formData.userLongitude,
+      }).toString();
+
+      const response = await fetchData(`/createUser?${queryParams}`, 'POST');
+      console.log('User created:', response);
+    } catch (error) {
+      console.error('Error creating user:', error);
+    }
   };
 
-  const handleAddToCommunityGroup = () => {
-    console.log(`Adding user ${formData.userId} to community group ${formData.communityId}`);
+  const handleAddToCommunityGroup = async () => {
+    try {
+      const response = await fetchData(`/addUserToCommunity?userId=${formData.userId}&communityId=${formData.communityId}`, 'POST');
+      console.log('User added to community group:', response);
+    } catch (error) {
+      console.error('Error adding user to community group:', error);
+    }
   };
 
-  const handleRemoveFromCommunityGroup = () => {
-    console.log(`Removing user ${formData.userId} from community group ${formData.communityId}`);
+  const handleRemoveFromCommunityGroup = async () => {
+    try {
+      const response = await fetchData(`/removeUserFromCommunity?userId=${formData.userId}&communityId=${formData.communityId}`, 'DELETE');
+      console.log('User removed from community group:', response);
+    } catch (error) {
+      console.error('Error removing user from community group:', error);
+    }
   };
 
-  const handleFindClosestCommunityGroup = () => {
-    console.log(`Finding closest ${formData.communityType} community group near (${formData.searchLatitude}, ${formData.searchLongitude})`);
+
+  const handleFindClosestCommunityGroup = async () => {
+    try {
+      const response = await fetchData(`/getClosestCommunityGroup?type=${formData.communityType}&latitude=${formData.searchLatitude}&longitude=${formData.searchLongitude}`);
+      setOutputData(response);
+      console.log('Closest community group found:', response);
+    } catch (error) {
+      console.error('Error finding closest community group:', error);
+    }
   };
 
-  const handleFindClosestResource = () => {
-    console.log(`Finding closest ${formData.resourceType} resource near (${formData.searchLatitude}, ${formData.searchLongitude})`);
+  const handleFindClosestResource = async () => {
+    try {
+      const response = await fetchData(`/getClosestResource?type=${formData.resourceType}&latitude=${formData.searchLatitude}&longitude=${formData.searchLongitude}`);
+      setOutputData(response);
+      console.log('Closest resource found:', response);
+    } catch (error) {
+      console.error('Error finding closest resource:', error);
+    }
   };
 
   return (
@@ -103,8 +142,8 @@ function GeneralHome({ user, onLogout }) {
             <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleInputChange} />
             <input type="number" name="age" placeholder="Age" value={formData.age} onChange={handleInputChange} />
             <select name="sex" value={formData.sex} onChange={handleInputChange}>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
+              <option value="male">MALE</option>
+              <option value="female">FEMALE</option>
               <option value="other">Other</option>
             </select>
             <input type="text" name="userLatitude" placeholder="Latitude" value={formData.userLatitude} onChange={handleInputChange} />

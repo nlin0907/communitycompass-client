@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FaUser } from 'react-icons/fa';
 import './design/AdminHome.css';
+import {fetchData} from "../utils";
 
 function AdminHome({ user, onLogout }) {
   const [isUserMenuOpen, setUserMenuOpen] = useState(false);
@@ -16,7 +17,7 @@ function AdminHome({ user, onLogout }) {
     resourceType: '',
     resourceHours: '',
     communityID: '',
-    reourceID: ''
+    resourceID: ''
   });
 
   const toggleUserMenu = () => setUserMenuOpen(!isUserMenuOpen);
@@ -26,16 +27,52 @@ function AdminHome({ user, onLogout }) {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleAddCommunityGroup = () => {
-    console.log('Adding Community Group:', formData);
+  const handleAddCommunityGroup = async () => {
+    try {
+      const params = new URLSearchParams({
+        communityName: formData.communityName,
+        communityType: formData.communityType,
+        latitude: formData.latitude,
+        longitude: formData.longitude,
+        capacity: formData.capacity,
+        description: formData.description,
+      });
+
+      const response = await fetchData(`/createCommunityGroup?${params.toString()}`, 'POST');
+      console.log('Community group added:', response);
+    } catch (error) {
+      console.error('Error adding community group:', error);
+    }
   };
 
-  const handleAddResource = () => {
-    console.log('Adding Resource:', formData);
-  };
+  const handleAddResource = async () => {
+    try {
+      const params = new URLSearchParams({
+        resourceName: formData.resourceName,
+        resourceType: formData.resourceType,
+        latitude: formData.latitude,
+        longitude: formData.longitude,
+        resourceHours: formData.resourceHours,
+        description: formData.description,
+      });
 
-  const handleDelete = () => {
-    console.log(`Deleting ${actionType === 'deleteCommunity' ? 'Community Group' : 'Resource'}`);
+      const response = await fetchData(`/createResource?${params.toString()}`, 'POST');
+      console.log('Resource added:', response);
+    } catch (error) {
+      console.error('Error adding resource:', error);
+    }
+  };
+  const handleDelete = async () => {
+    const url = actionType === 'deleteCommunity'
+        ? `/deleteCommunityGroup?id=${formData.communityID}`
+        : `/deleteResource?id=${formData.resourceID}`;
+
+    try {
+      const response = await fetchData(url, 'DELETE');
+      console.log(`${actionType === 'deleteCommunity' ? 'Community Group' : 'Resource'} deleted:`, response);
+    } catch (error) {
+      console.error(`Error deleting ${actionType === 'deleteCommunity' ? 'community group' : 'resource'}:`, error);
+    }
   };
 
   return (

@@ -23,20 +23,9 @@ import java.time.Period;
 public class Employee {
 
     @Id
-    @SequenceGenerator(
-            name = "employee_sequence",
-            sequenceName = "employee_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "employee_sequence"
-    )
-    @Column(
-            name = "id",
-            updatable = false
-    )
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", updatable = false, nullable = false)
+    private Integer id;
 
     public Long getId() {
         return id;
@@ -50,18 +39,10 @@ public class Employee {
     )
     private String firstname;
 
-    @Column(
-            name = "lastname",
-            nullable = false,
-            columnDefinition = "TEXT"
-    )
+    @Column(name = "lastname", nullable = false, columnDefinition = "TEXT")
     private String lastname;
 
-    @Column(
-            name = "email",
-            nullable = false,
-            columnDefinition = "TEXT"
-    )
+    @Column(name = "email", nullable = false, columnDefinition = "VARCHAR(255)")
     private String email;
 
     public String getEmail() {
@@ -94,6 +75,11 @@ public class Employee {
 
 
     public Integer getAge() {
-        return Period.between(this.dob, LocalDate.now()).getYears();
+        return (this.dob != null) ? Period.between(this.dob, LocalDate.now()).getYears() : null;
+    }
+
+    public enum Role {
+        ADMIN, GENERAL
     }
 }
+
