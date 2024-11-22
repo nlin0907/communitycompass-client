@@ -3,19 +3,28 @@ package com.example.login.service;
 
 import com.example.login.model.Employee;
 import com.example.login.repository.EmployeeRepository;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
 public class EmployeeService {
 
     @Autowired
     private final EmployeeRepository employeeRepository;
+
+    @Autowired
+    private final BCryptPasswordEncoder passwordEncoder;
+
+    // Manual constructor for dependency injection
+    public EmployeeService(EmployeeRepository employeeRepository, BCryptPasswordEncoder passwordEncoder) {
+        this.employeeRepository = employeeRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
 
     public List<Employee> getEmployees() {
         return employeeRepository.findAll();
@@ -24,13 +33,15 @@ public class EmployeeService {
     public Employee getEmployee(String email, String password) {
         Optional<Employee> employeeOptional = employeeRepository.findEmployeeByEmail(email);
         if (employeeOptional.isPresent()) {
-            if (!employeeOptional.get().getPassword().equals(password)) {
-                throw new IllegalStateException("password is not correct for email: "+ email);
+            Employee foundEmployee = employeeOptional.get();
+            if (passwordEncoder.matches(password, foundEmployee.getPassword())) {
+                return foundEmployee;
+            } else {
+                throw new IllegalArgumentException("Invalid password");
             }
-        }else {
+        } else {
             throw new IllegalStateException("email: " + email + " is not present");
         }
-        return employeeOptional.get();
     }
 
     public void addNewEmployee(Employee employee) {
@@ -39,6 +50,9 @@ public class EmployeeService {
         if(employeeOptional.isPresent()) {
             throw new IllegalStateException("email already taken");
         }
+        String encodedPassword = passwordEncoder.encode(employee.getPassword());
+        employee.setPassword(encodedPassword);
+
         employeeRepository.save(employee);
     }
 
