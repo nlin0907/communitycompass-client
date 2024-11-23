@@ -8,7 +8,7 @@ function LoginPage({ onLogin }) {
 
   const handleLogin = async () => {
     try {
-      const url = `http://localhost:9090/api/employee/get?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`;
+      const url = `https://clientapp-441220.uk.r.appspot.com/api/employee/get?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}&role=${encodeURIComponent(role)}`;
       const response = await axios.get(url);
       const userData = response.data;
 
@@ -24,10 +24,10 @@ function LoginPage({ onLogin }) {
       <div className="login-form">
         <h2>Sign in to your account</h2>
         <div className="input-container">
-          <input type="email" placeholder="Enter email" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
         </div>
         <div className="input-container">
-          <input type="password" placeholder="Enter password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
         </div>
         <div className="role-selection">
           <label>

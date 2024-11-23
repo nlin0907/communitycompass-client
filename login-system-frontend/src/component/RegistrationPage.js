@@ -72,12 +72,12 @@ function RegistrationPage() {
 
     try {
       const userData = {
-        firstname,
-        lastname,
-        email,
-        dob,
-        password,
-        role,
+        firstname: firstname,
+        lastname: lastname,
+        email: email,
+        dob: dob,
+        password: password,
+        role: role.toUpperCase(),
       };
 
       const response = await axios.post('https://clientapp-441220.uk.r.appspot.com/api/employee/add', userData);

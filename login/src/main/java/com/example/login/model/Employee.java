@@ -27,10 +27,9 @@ public class Employee {
     @Column(name = "id", updatable = false, nullable = false)
     private Integer id;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
-
 
     @Column(
             name = "firstname",
@@ -80,6 +79,13 @@ public class Employee {
 
     public enum Role {
         ADMIN, GENERAL
+    }
+    @Column(name = "role", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    public Role getRole() {
+        return role;
     }
 }
 

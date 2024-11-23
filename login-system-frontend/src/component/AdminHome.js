@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FaUser } from 'react-icons/fa';
 import './design/AdminHome.css';
-import {fetchData} from "../utils";
+import { fetchData } from '../utils';
 
 function AdminHome({ user, onLogout }) {
   const [isUserMenuOpen, setUserMenuOpen] = useState(false);
@@ -17,7 +17,7 @@ function AdminHome({ user, onLogout }) {
     resourceType: '',
     resourceHours: '',
     communityID: '',
-    resourceID: ''
+    resourceID: '',
   });
 
   const toggleUserMenu = () => setUserMenuOpen(!isUserMenuOpen);
@@ -62,8 +62,10 @@ function AdminHome({ user, onLogout }) {
       console.error('Error adding resource:', error);
     }
   };
+
   const handleDelete = async () => {
-    const url = actionType === 'deleteCommunity'
+    const url =
+      actionType === 'deleteCommunity'
         ? `/deleteCommunityGroup?id=${formData.communityID}`
         : `/deleteResource?id=${formData.resourceID}`;
 
@@ -75,20 +77,28 @@ function AdminHome({ user, onLogout }) {
     }
   };
 
+  const handleLogout = () => {
+    // Clear any persistent authentication data
+    localStorage.removeItem('authToken');
+    sessionStorage.removeItem('authToken');
+    document.cookie = 'authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    onLogout(); // Notify parent component
+  };
+
   return (
     <div className="home-page">
-      <nav className="navbar">
-        <span>Welcome, {user.firstname}!</span>
-        <div className="nav-icons">
-          <FaUser className="user-icon" onClick={toggleUserMenu} />
-          {isUserMenuOpen && (
-            <div className="custom-menu">
-              <ul>
-                <li onClick={onLogout}>Logout</li>
-              </ul>
-            </div>
-          )}
-        </div>
+    <nav className="navbar">
+      <span>Welcome, {user.firstname}!</span>
+      <div className="nav-icons">
+        <FaUser className="user-icon" onClick={toggleUserMenu} />
+        {isUserMenuOpen && (
+          <div className="custom-menu">
+            <ul>
+              <li onClick={(e) => { e.stopPropagation(); handleLogout(); }}>Logout</li>
+            </ul>
+          </div>
+        )}
+      </div>
       </nav>
       <header>
         <h1>Admin Dashboard</h1>

@@ -30,19 +30,38 @@ public class EmployeeService {
         return employeeRepository.findAll();
     }
 
-    public Employee getEmployee(String email, String password) {
+    public Employee getEmployee(String email, String password, Optional<String> role) {
         Optional<Employee> employeeOptional = employeeRepository.findEmployeeByEmail(email);
+
         if (employeeOptional.isPresent()) {
             Employee foundEmployee = employeeOptional.get();
-            if (passwordEncoder.matches(password, foundEmployee.getPassword())) {
-                return foundEmployee;
-            } else {
+            
+            // Check password
+            if (!passwordEncoder.matches(password, foundEmployee.getPassword())) {
                 throw new IllegalArgumentException("Invalid password");
             }
+
+            // Validate role if provided
+            if (role.isPresent()) {
+                try {
+                    // Convert role string to enum for validation
+                    Employee.Role roleEnum = Employee.Role.valueOf(role.get().toUpperCase());
+
+                    // Compare with the found employee's role
+                    if (roleEnum != foundEmployee.getRole()) {
+                        throw new IllegalArgumentException("Invalid role: " + role.get());
+                    }
+                } catch (IllegalArgumentException e) {
+                    throw new IllegalArgumentException("Invalid role: " + role.get());
+                }
+            }
+
+            return foundEmployee;
         } else {
-            throw new IllegalStateException("email: " + email + " is not present");
+            throw new IllegalStateException("Email: " + email + " is not present");
         }
     }
+
 
     public void addNewEmployee(Employee employee) {
         Optional<Employee> employeeOptional = employeeRepository
