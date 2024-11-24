@@ -5,7 +5,8 @@ import {fetchData} from "../utils";
 
 function AdminHome({ user, onLogout }) {
   const [isUserMenuOpen, setUserMenuOpen] = useState(false);
-  const [actionType, setActionType] = useState(''); // Track whether to add or delete
+  const [actionType, setActionType] = useState('');
+  const [statusMessage, setStatusMessage] = useState('');
   const [formData, setFormData] = useState({
     communityName: '',
     communityType: '',
@@ -39,8 +40,10 @@ function AdminHome({ user, onLogout }) {
       });
 
       const response = await fetchData(`/createCommunityGroup?${params.toString()}`, 'POST');
+      setStatusMessage('Community group added successfully!');
       console.log('Community group added:', response);
     } catch (error) {
+      setStatusMessage('Error adding community group.');
       console.error('Error adding community group:', error);
     }
   };
@@ -57,8 +60,10 @@ function AdminHome({ user, onLogout }) {
       });
 
       const response = await fetchData(`/createResource?${params.toString()}`, 'POST');
+      setStatusMessage('Resource added successfully!');
       console.log('Resource added:', response);
     } catch (error) {
+      setStatusMessage('Error adding resource.');
       console.error('Error adding resource:', error);
     }
   };
@@ -69,8 +74,10 @@ function AdminHome({ user, onLogout }) {
 
     try {
       const response = await fetchData(url, 'DELETE');
+      setStatusMessage(`${actionType === 'deleteCommunity' ? 'Community Group' : 'Resource'} deleted successfully!`);
       console.log(`${actionType === 'deleteCommunity' ? 'Community Group' : 'Resource'} deleted:`, response);
     } catch (error) {
+      setStatusMessage(`Error deleting ${actionType === 'deleteCommunity' ? 'community group' : 'resource'}.`);
       console.error(`Error deleting ${actionType === 'deleteCommunity' ? 'community group' : 'resource'}:`, error);
     }
   };
@@ -148,6 +155,7 @@ function AdminHome({ user, onLogout }) {
             <button onClick={handleDelete}>Delete</button>
           </div>
         )}
+        {statusMessage && <div className="status-message">{statusMessage}</div>}
       </main>
     </div>
   );

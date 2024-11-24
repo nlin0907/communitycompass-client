@@ -6,6 +6,7 @@ import {fetchData} from "../utils";
 function GeneralHome({ user, onLogout }) {
   const [isUserMenuOpen, setUserMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('createUser');
+  const [statusMessage, setStatusMessage] = useState('');
   const [formData, setFormData] = useState({
     userName: '',
     email: '',
@@ -43,8 +44,11 @@ function GeneralHome({ user, onLogout }) {
       }).toString();
 
       const response = await fetchData(`/createUser?${queryParams}`, 'POST');
+      setStatusMessage('User created successfully!');
+      // FIX THIS MESSAGE
       console.log('User created:', response);
     } catch (error) {
+      setStatusMessage('Error creating user.');
       console.error('Error creating user:', error);
     }
   };
@@ -52,8 +56,10 @@ function GeneralHome({ user, onLogout }) {
   const handleAddToCommunityGroup = async () => {
     try {
       const response = await fetchData(`/addUserToCommunity?userId=${formData.userId}&communityId=${formData.communityId}`, 'POST');
+      setStatusMessage('User added to community group successfully!');
       console.log('User added to community group:', response);
     } catch (error) {
+      setStatusMessage('Error adding user to community group.');
       console.error('Error adding user to community group:', error);
     }
   };
@@ -61,8 +67,10 @@ function GeneralHome({ user, onLogout }) {
   const handleRemoveFromCommunityGroup = async () => {
     try {
       const response = await fetchData(`/removeUserFromCommunity?userId=${formData.userId}&communityId=${formData.communityId}`, 'DELETE');
+      setStatusMessage('User removed from community group successfully!');
       console.log('User removed from community group:', response);
     } catch (error) {
+      setStatusMessage('Error removing user from community group.');
       console.error('Error removing user from community group:', error);
     }
   };
@@ -72,8 +80,10 @@ function GeneralHome({ user, onLogout }) {
     try {
       const response = await fetchData(`/getClosestCommunityGroup?type=${formData.communityType}&latitude=${formData.searchLatitude}&longitude=${formData.searchLongitude}`);
       setOutputData(response);
+      setStatusMessage('Closest community group found!');
       console.log('Closest community group found:', response);
     } catch (error) {
+      setStatusMessage('Error finding closest community group.');
       console.error('Error finding closest community group:', error);
     }
   };
@@ -82,8 +92,10 @@ function GeneralHome({ user, onLogout }) {
     try {
       const response = await fetchData(`/getClosestResource?type=${formData.resourceType}&latitude=${formData.searchLatitude}&longitude=${formData.searchLongitude}`);
       setOutputData(response);
+      setStatusMessage('Closest resource found!');
       console.log('Closest resource found:', response);
     } catch (error) {
+      setStatusMessage('Error finding closest resource.');
       console.error('Error finding closest resource:', error);
     }
   };
@@ -203,6 +215,8 @@ function GeneralHome({ user, onLogout }) {
             )}
           </div>
         )}
+
+        {statusMessage && <div className="status-message">{statusMessage}</div>}
 
         {outputData && (
           <div className="output-data">
