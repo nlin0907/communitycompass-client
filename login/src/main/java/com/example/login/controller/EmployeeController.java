@@ -5,6 +5,7 @@ import com.example.login.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import java.util.Map;
 import java.util.Optional;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,15 +31,25 @@ public class EmployeeController {
     }
 
     @GetMapping("/get")
-    public ResponseEntity<Employee> getEmployee(@RequestParam(name = "email") String email,
-                                                @RequestParam(name = "password") String password,
-                                                @RequestParam(required = false) String role) {
+    public ResponseEntity<?> getEmployee(@RequestParam(name = "email") String email,
+                                        @RequestParam(name = "password") String password,
+                                        @RequestParam(required = false) String role) {
         try {
             Optional<String> roleOptional = Optional.ofNullable(role); // Convert role to Optional
             Employee employee = employeeService.getEmployee(email, password, roleOptional);
             return ResponseEntity.ok(employee);
-        } catch (IllegalArgumentException | IllegalStateException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        } catch (IllegalArgumentException e) {
+            // Return BAD_REQUEST with the specific error message
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                                .body(Map.of("error", "Bad Request", "message", e.getMessage()));
+        } catch (IllegalStateException e) {
+            // Return NOT_FOUND for email not present
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                                .body(Map.of("error", "Not Found", "message", e.getMessage()));
+        } catch (Exception e) {
+            // Return INTERNAL_SERVER_ERROR for unexpected errors
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                .body(Map.of("error", "Internal Server Error", "message", "Something went wrong"));
         }
     }
 

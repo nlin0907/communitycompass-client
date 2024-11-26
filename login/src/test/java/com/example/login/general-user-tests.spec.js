@@ -1,16 +1,68 @@
 const { test, expect } = require('@playwright/test');
-const axios = require('axios');
+const { exec } = require('child_process');
+const path = require('path');
+const { platform } = require('os');
+
+let frontendProcess;
 
 test.describe('General User Registration, Login, and Logout Flow', () => {
   let newUserEmail;
   let newUserPassword;
 
-  test.beforeAll(() => {
-    // Generate a unique email for testing
+  test.beforeAll(async () => {
+    // Define the absolute path to the frontend directory
+    const frontendAbsolutePath = path.resolve(__dirname, '../../../../../../../login-system-frontend/');
+    const env = { ...process.env, BROWSER: 'none' };
+
+    // Start the frontend server with the environment variable set
+    frontendProcess = exec('npm start', { cwd: frontendAbsolutePath, env }, (error, stdout, stderr) => {
+      if (error) {
+        console.error(`Error starting frontend: ${error.message}`);
+      }
+      if (stderr) {
+        console.error(`Frontend stderr: ${stderr}`);
+      }
+    });
+
+    // Wait for the frontend to be ready (adjust timeout if necessary)
+    await new Promise((resolve) => setTimeout(resolve, 5000));
+
     const timestamp = Date.now();
     newUserEmail = `testuser${timestamp}@example.com`;
     newUserPassword = 'TestPassword123';
   });
+
+  test.afterAll(async () => {
+    // Kill the frontend process
+    if (frontendProcess) {
+      console.log(`Killing frontend process with PID: ${frontendProcess.pid}`);
+      frontendProcess.kill('SIGTERM');
+      console.log('Frontend process terminated');
+    } else {
+      console.log('Frontend process was not running or already stopped');
+    }
+
+    if (platform() === 'win32') {
+      exec('taskkill /F /PID $(netstat -ano | findstr ":3000" | findstr "LISTEN" | awk \'{print $5}\')', (error, stdout, stderr) => {
+        if (error) {
+          console.error(`Error terminating process on port 3000: ${error.message}`);
+        }
+        if (stderr) {
+          console.error(`Error output: ${stderr}`);
+        }
+      });
+    } else {
+      exec('lsof -t -i:3000 | xargs kill -9', (error, stdout, stderr) => {
+        if (error) {
+          console.error(`Error terminating process on port 3000: ${error.message}`);
+        }
+        if (stderr) {
+          console.error(`Error output: ${stderr}`);
+        }
+      });
+    }
+  });
+      
 
   test('should register a new user, login, and then logout', async ({ page }) => {
     // Mock the POST request for user registration
@@ -95,7 +147,7 @@ test.describe('General User Registration, Login, and Logout Flow', () => {
     const userIcon = page.locator('svg.user-icon'); // Use the correct selector for FaUser icon
     await userIcon.click(); // Open the user menu
 
-=    const logoutOption = page.locator('li:has-text("Logout")');
+    const logoutOption = page.locator('li:has-text("Logout")');
     await logoutOption.waitFor({ state: 'visible', timeout: 5000 });
     await logoutOption.click(); // Log out the user
 
