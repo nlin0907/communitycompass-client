@@ -16,13 +16,10 @@ public class EmployeeService {
     @Autowired
     private final EmployeeRepository employeeRepository;
 
-    @Autowired
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    // Manual constructor for dependency injection
-    public EmployeeService(EmployeeRepository employeeRepository, BCryptPasswordEncoder passwordEncoder) {
+    public EmployeeService(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
-        this.passwordEncoder = passwordEncoder;
     }
 
 
