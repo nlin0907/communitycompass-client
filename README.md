@@ -25,4 +25,4 @@ Install the required dependencies using <code>npm install</code>
 ### Running the Application (Development Mode)
 Start the Development Server
 Run the following command to start the frontend in development mode: <code>npm start</code>
-The app will be available at http://localhost:3000 by default.
+The app will be available at http://localhost:3000 by default. hi
