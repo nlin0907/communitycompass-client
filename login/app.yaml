@@ -14,6 +14,5 @@ env_variables:
   JAVA_HOME: "/usr/lib/jvm/java-17-openjdk"
 
 handlers:
-  - url: /.*
+  - url: /.*   # All requests will be handled by Spring Boot, including React static files
     script: auto
-
