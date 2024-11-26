@@ -110,7 +110,7 @@ test.describe('General User Registration, Login, and Logout Flow', () => {
     await page.fill('input[placeholder="Email"]', newUserEmail);
     await page.fill('input[placeholder="Password"]', newUserPassword);
     await page.fill('input[placeholder="Date of Birth"]', '2024-11-22');
-    await page.click('input[value="general"]');  // Select 'general' role
+    await page.click('input[value="general"]'); 
 
     // Step 3: Submit the registration form
     await page.click('button:has-text("Register")');
@@ -123,7 +123,7 @@ test.describe('General User Registration, Login, and Logout Flow', () => {
     await loginLink.click();
 
     // Step 6: Confirm that the user is redirected to the login page
-    await expect(page).toHaveURL('http://localhost:3000');  // Adjust URL to match your login page
+    await expect(page).toHaveURL('http://localhost:3000'); 
 
     // Step 7: Fill in the login form with the same credentials
     await page.fill('input[placeholder="Email"]', newUserEmail);
@@ -144,12 +144,12 @@ test.describe('General User Registration, Login, and Logout Flow', () => {
     await expect(welcomeText).toHaveText('Welcome, John!');
     
     // Step 11: Log out
-    const userIcon = page.locator('svg.user-icon'); // Use the correct selector for FaUser icon
-    await userIcon.click(); // Open the user menu
+    const userIcon = page.locator('svg.user-icon');
+    await userIcon.click(); 
 
     const logoutOption = page.locator('li:has-text("Logout")');
     await logoutOption.waitFor({ state: 'visible', timeout: 5000 });
-    await logoutOption.click(); // Log out the user
+    await logoutOption.click();
 
     const loginButton = page.locator('button:has-text("Login")');
     await expect(loginButton).toBeVisible();
