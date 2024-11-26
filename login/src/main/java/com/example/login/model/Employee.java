@@ -27,7 +27,15 @@ public class Employee {
     @Column(name = "id", updatable = false, nullable = false)
     private Integer id;
 
-    @Column(name = "firstname", nullable = false, columnDefinition = "TEXT")
+    public Integer getId() {
+        return id;
+    }
+
+    @Column(
+            name = "firstname",
+            nullable = false,
+            columnDefinition = "TEXT"
+    )
     private String firstname;
 
     @Column(name = "lastname", nullable = false, columnDefinition = "TEXT")
@@ -36,19 +44,34 @@ public class Employee {
     @Column(name = "email", nullable = false, columnDefinition = "VARCHAR(255)")
     private String email;
 
-    @ToString.Exclude // Exclude password from logs
-    @Column(name = "password", nullable = false, columnDefinition = "TEXT")
-    private String password;
-
-    @Column(name = "role", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Role role;
-
-    @Column(name = "dob", nullable = true)
-    private LocalDate dob;
+    public String getEmail() {
+        return email;
+    }
 
     @Transient
     private Integer age;
+
+    @Column(
+            name = "dob",
+            updatable = true
+    )
+    private LocalDate dob;
+
+    @Column(
+            name = "password",
+            nullable = false,
+            columnDefinition = "TEXT"
+    )
+    private String password;
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
 
     public Integer getAge() {
         return (this.dob != null) ? Period.between(this.dob, LocalDate.now()).getYears() : null;
@@ -56,6 +79,13 @@ public class Employee {
 
     public enum Role {
         ADMIN, GENERAL
+    }
+    @Column(name = "role", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    public Role getRole() {
+        return role;
     }
 }
 

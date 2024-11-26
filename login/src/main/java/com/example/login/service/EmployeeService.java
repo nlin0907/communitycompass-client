@@ -3,35 +3,65 @@ package com.example.login.service;
 
 import com.example.login.model.Employee;
 import com.example.login.repository.EmployeeRepository;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
 public class EmployeeService {
 
     @Autowired
     private final EmployeeRepository employeeRepository;
 
+    @Autowired
+    private final BCryptPasswordEncoder passwordEncoder;
+
+    // Manual constructor for dependency injection
+    public EmployeeService(EmployeeRepository employeeRepository, BCryptPasswordEncoder passwordEncoder) {
+        this.employeeRepository = employeeRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+
     public List<Employee> getEmployees() {
         return employeeRepository.findAll();
     }
 
-    public Employee getEmployee(String email, String password) {
+    public Employee getEmployee(String email, String password, Optional<String> role) {
         Optional<Employee> employeeOptional = employeeRepository.findEmployeeByEmail(email);
+
         if (employeeOptional.isPresent()) {
-            if (!employeeOptional.get().getPassword().equals(password)) {
-                throw new IllegalStateException("password is not correct for email: "+ email);
+            Employee foundEmployee = employeeOptional.get();
+            
+            // Check password
+            if (!passwordEncoder.matches(password, foundEmployee.getPassword())) {
+                throw new IllegalArgumentException("Invalid password");
             }
-        }else {
-            throw new IllegalStateException("email: " + email + " is not present");
+
+            // Validate role if provided
+            if (role.isPresent()) {
+                try {
+                    // Convert role string to enum for validation
+                    Employee.Role roleEnum = Employee.Role.valueOf(role.get().toUpperCase());
+
+                    // Compare with the found employee's role
+                    if (roleEnum != foundEmployee.getRole()) {
+                        throw new IllegalArgumentException("Invalid role: " + role.get());
+                    }
+                } catch (IllegalArgumentException e) {
+                    throw new IllegalArgumentException("Invalid role: " + role.get());
+                }
+            }
+
+            return foundEmployee;
+        } else {
+            throw new IllegalStateException("Email: " + email + " is not present");
         }
-        return employeeOptional.get();
     }
+
 
     public void addNewEmployee(Employee employee) {
         Optional<Employee> employeeOptional = employeeRepository
@@ -39,6 +69,9 @@ public class EmployeeService {
         if(employeeOptional.isPresent()) {
             throw new IllegalStateException("email already taken");
         }
+        String encodedPassword = passwordEncoder.encode(employee.getPassword());
+        employee.setPassword(encodedPassword);
+
         employeeRepository.save(employee);
     }
 
