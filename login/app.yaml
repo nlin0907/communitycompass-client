@@ -10,7 +10,7 @@ automatic_scaling:
 env_variables:
   SPRING_DATASOURCE_URL: jdbc:mysql://google/clientlogindb?cloudSqlInstance=clientapp-441220:us-east1:clientlogindb&socketFactory=com.google.cloud.sql.mysql.SocketFactory
   SPRING_DATASOURCE_USERNAME: root
-  SPRING_DATASOURCE_PASSWORD: root
+  SPRING_DATASOURCE_PASSWORD: (/u>ji;~E3Rm2@1h
   JAVA_HOME: "/usr/lib/jvm/java-17-openjdk"
 
 handlers:
