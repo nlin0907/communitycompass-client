@@ -14,5 +14,10 @@ env_variables:
   JAVA_HOME: "/usr/lib/jvm/java-17-openjdk"
 
 handlers:
-  - url: /.*   # All requests will be handled by Spring Boot, including React static files
-    script: auto
+  - url: /api/.*  # Specify backend API routes
+    script: auto  # Routes that are handled by the backend
+
+  - url: /.*  # This catches all other routes
+    static_files: build/index.html  # Serve React app's entry point
+    upload: build/index.html
+    secure: always
