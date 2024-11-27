@@ -23,8 +23,8 @@ test.describe('Admin Registration, Login, and Logout Flow', () => {
             }
         });
 
-        // Wait for the frontend to be ready (adjust timeout if necessary)
-        await new Promise((resolve) => setTimeout(resolve, 5000)); // 5-second delay to allow the server to start
+        // Wait for the frontend to be ready if necessary
+        await new Promise((resolve) => setTimeout(resolve, 5000)); // 5 sec
 
         // Generate a unique email for testing
         const timestamp = Date.now();

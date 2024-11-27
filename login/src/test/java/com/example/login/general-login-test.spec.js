@@ -24,7 +24,7 @@ test.describe('General User Registration, Login, and Logout Flow', () => {
             }
         });
 
-        // Wait for the frontend to be ready (adjust timeout if necessary)
+        // Wait for the frontend to be ready if necessary
         await new Promise((resolve) => setTimeout(resolve, 5000));
 
         const timestamp = Date.now();
