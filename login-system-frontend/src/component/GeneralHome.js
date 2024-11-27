@@ -32,7 +32,35 @@ function GeneralHome({ user, onLogout }) {
 
   const handleCreateUser = async () => {
     console.log('Create User button clicked.');
+
     try {
+      // Input validation
+      if (!formData.userName || formData.userName.trim() === '') {
+        alert('Name cannot be empty.');
+        return;
+      }
+      if (!formData.email || !formData.email.includes('@')) {
+        alert('Invalid email address.');
+        return;
+      }
+      if (formData.age < 0) {
+        alert('Age cannot be negative.');
+        return;
+      }
+      if (!['MALE', 'FEMALE', 'OTHER'].includes(formData.sex?.toUpperCase())) {
+        alert('Invalid sex value.');
+        return;
+      }
+      if (formData.userLatitude < -90 || formData.userLatitude > 90) {
+        alert('Latitude must be between -90 and 90.');
+        return;
+      }
+      if (formData.userLongitude < -180 || formData.userLongitude > 180) {
+        alert('Longitude must be between -180 and 180.');
+        return;
+      }
+
+      // Construct query parameters and send request
       const queryParams = new URLSearchParams({
         name: formData.userName,
         email: formData.email,
@@ -44,8 +72,11 @@ function GeneralHome({ user, onLogout }) {
 
       const response = await fetchData(`/createUser?${queryParams}`, 'POST');
       console.log('User created:', response);
+      alert('User created successfully!');
+
     } catch (error) {
-      console.error('Error creating user:', error);
+      console.error('Unexpected error during user creation:', error);
+      alert('An unexpected error occurred. Please try again.');
     }
   };
 
