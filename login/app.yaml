@@ -18,6 +18,5 @@ handlers:
     script: auto  # Routes that are handled by the backend
 
   - url: /.*  # This catches all other routes
-    static_files: build/index.html  # Serve React app's entry point
-    upload: build/index.html
+    static_dir: src/main/resources/static  # Serve React app's entry point
     secure: always
