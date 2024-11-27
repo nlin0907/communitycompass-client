@@ -1,20 +1,39 @@
 ## README
 
-This is the client app for the [community compass service](https://github.com/preethiprakash1/communitycompass). It is built using React.js and includes components for user login, registration, and viewing different home pages depending on user roles (e.g., Admin, General User).
+The Community Compass Client is a front-end application that interacts with the [Community Compass Service](https://github.com/preethiprakash1/communitycompass) to provide an efficient, role-based interface for managing and accessing community resources. Built using React.js, it enables social workers, case managers, and community administrators to perform their tasks seamlessly by leveraging backend services.
 
-### Features
-- Login Page: Allows users to securely log in using their credentials.
-- Registration Page: Enables new users to create accounts and gain access to the platform.
-- Role-Based Home Pages: Displays distinct dashboards for Admins and General Users with tailored functionalities, such as:
-  - Admins: Manage users, groups, and resources.
-  - General Users: Access and interact with community groups and resources.
-- Enhanced User Experience: Simplifies navigation and ensures smooth interaction with backend services.
+The application allows users to register, log in, and access features tailored to their roles (NPO Worker or Admin). It simplifies the process of finding, managing, and updating resources and community groups, making it faster, easier, and more accurate than traditional methods.
 
-### Value Proposition
-With Community Compass, users can:
-- Access community resources and groups faster and more efficiently.
-- Perform role-based administrative or user-specific tasks that were cumbersome or manual before.
-- Benefit from secure, streamlined, and user-friendly features that reduce operational overhead.
+### How the Client App Uses the Service
+- Backend Integration: The client uses the Community Compass Service's APIs for retrieving data and making updates to resources and groups.
+- Dynamic Role-Based Functionality:
+  - NPO Workers: Search resources, manage user memberships in groups, and register clients.
+  - Admins: Create, update, and delete resources and groups.
+- Data Flow: The client sends HTTP requests to the service endpoints and displays the returned data in a user-friendly interface.
+
+### How This App Helps the Target Audience, the Homeless
+#### Before Community Compass Client:
+Social workers and admins had to rely on fragmented systems, manual processes, and outdated resource directories to manage community groups and community resources for homeless individuals.
+
+#### With Community Compass Client:
+- Faster Access: Instantly search and filter community resources by type or location.
+- Better Management: Directly add or remove users from community groups.
+- Seamless Integration: Easily update resources and groups without technical barriers.
+- Cost-Effective: Reduces reliance on costly third-party solutions by centralizing resource management.
+
+### What Users Can Do
+1. Register and Log In:
+  - Create accounts with a role (Admin or NPO Worker).
+  - Log in securely and access role-specific dashboards.
+2. For NPO Workers:
+  - Search for resources or community groups based on email, type, or location.
+  - Add or remove users from community groups to manage memberships.
+3. For Admins:
+  - Create, update, or delete community groups and resources.
+  - Manage system-wide data for better resource availability.
+4. Efficient Workflows:
+  - Caseworkers can directly register clients into relevant groups or resources without delays.
+  - Administrators can keep the system updated with minimal effort.
 
 ### Prerequisites
 Ensure you have the following installed:
@@ -41,6 +60,6 @@ To build a third-party client that interacts with the Community Compass service:
 
 1. Understand the API: Refer to the API Documentation in the Community Compass service README for details about available endpoints, authentication methods, and payload structures.
 2. Authentication: Implement the required OAuth2 or token-based authentication to securely access the service.
-3. UI Framework: Use any framework of your choice (React.js, Angular, etc.) and ensure your client adheres to the API request/response contract.
+3. UI Framework: Use any framework of your choice (React.js, Angular, etc.) and ensure your client adheres to the API request/response contract. Configure the base URL to point to the backend API.
 4. Testing: Validate API requests using tools like Postman before integrating them into your client app.
 
