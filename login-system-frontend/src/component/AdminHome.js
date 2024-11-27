@@ -29,6 +29,33 @@ function AdminHome({ user, onLogout }) {
 
   const handleAddCommunityGroup = async () => {
     try {
+      // Input validation
+      if (!formData.communityName || formData.communityName.trim() === '') {
+        alert('Community name cannot be empty.');
+        return;
+      }
+      if (!['MENTAL_HEALTH', 'EMPLOYMENT_ASSISTANCE', 'OTHER'].includes(formData.communityType?.toUpperCase())) {
+        alert('Invalid community type. Allowed types: MENTAL_HEALTH, EMPLOYMENT_ASSISTANCE, OTHER.');
+        return;
+      }
+      if (formData.latitude < -90 || formData.latitude > 90) {
+        alert('Latitude must be between -90 and 90.');
+        return;
+      }
+      if (formData.longitude < -180 || formData.longitude > 180) {
+        alert('Longitude must be between -180 and 180.');
+        return;
+      }
+      if (formData.capacity < 0) {
+        alert('Capacity must be a non-negative value.');
+        return;
+      }
+      if (!formData.description || formData.description.trim() === '') {
+        alert('Description cannot be empty.');
+        return;
+      }
+
+      // Construct query parameters
       const params = new URLSearchParams({
         communityName: formData.communityName,
         communityType: formData.communityType,
@@ -38,15 +65,47 @@ function AdminHome({ user, onLogout }) {
         description: formData.description,
       });
 
+      // Make API call
       const response = await fetchData(`/createCommunityGroup?${params.toString()}`, 'POST');
       console.log('Community group added:', response);
+      alert('Community group added successfully!');
     } catch (error) {
       console.error('Error adding community group:', error);
+      alert(`Error adding community group: ${error.message}`);
     }
   };
 
   const handleAddResource = async () => {
+    console.log('Add Resource button clicked.');
     try {
+      // Input validation
+      if (!formData.resourceName || formData.resourceName.trim() === '') {
+        alert('Resource name cannot be empty.');
+        return;
+      }
+      if (!['SHELTER', 'FOOD_BANK', 'CLINIC', 'RESTROOM', 'OTHER'].includes(formData.resourceType?.toUpperCase())) {
+        alert('Invalid resource type.');
+        return;
+      }
+      if (formData.latitude < -90 || formData.latitude > 90) {
+        alert('Latitude must be between -90 and 90.');
+        return;
+      }
+      if (formData.longitude < -180 || formData.longitude > 180) {
+        alert('Longitude must be between -180 and 180.');
+        return;
+      }
+      const hoursRegex = /^(1[0-2]|[1-9])(AM|PM)-(1[0-2]|[1-9])(AM|PM)$/;
+      if (!formData.resourceHours || !hoursRegex.test(formData.resourceHours)) {
+        alert('Resource hours must be in the format "HHAM-HHPM", e.g., "9AM-5PM".');
+        return;
+      }
+      if (!formData.description || formData.description.trim() === '') {
+        alert('Description cannot be empty.');
+        return;
+      }
+
+      // Construct query parameters and send request
       const params = new URLSearchParams({
         resourceName: formData.resourceName,
         resourceType: formData.resourceType,
@@ -58,8 +117,10 @@ function AdminHome({ user, onLogout }) {
 
       const response = await fetchData(`/createResource?${params.toString()}`, 'POST');
       console.log('Resource added:', response);
+      alert('Resource added successfully!');
     } catch (error) {
-      console.error('Error adding resource:', error);
+      console.error('Unexpected error during resource creation:', error);
+      alert('An unexpected error occurred. Please try again.');
     }
   };
 
