@@ -69,4 +69,9 @@ To build a third-party client that interacts with the Community Compass service:
 2. Authentication: Implement the required OAuth2 or token-based authentication to securely access the service.
 3. UI Framework: Use any framework of your choice (React.js, Angular, etc.) and ensure your client adheres to the API request/response contract. Configure the base URL to point to the backend API.
 4. Testing: Validate API requests using tools like Postman before integrating them into your client app.
+5. 
+
+### Manual End-to-End Testing
+
+Instructions for doing end to end testing manually are [here](https://github.com/nlin0907/communitycompass-client/blob/main/login/src/test/java/com/example/login/manual-end2end-tests.md)
 
