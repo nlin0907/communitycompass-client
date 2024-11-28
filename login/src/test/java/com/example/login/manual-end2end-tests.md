@@ -1,5 +1,10 @@
 # Manual End-to-End Testing Documentation for Admin and General Users
 
+## To Start
+- Clone the repo
+- Navigate to the login-system-frontend directory
+- There, run **npm start** - this will launch the client app (locally) in your browser.
+
 ## General Notes
 - **Expected outcomes** include:
    - Alerts for input validation issues.
