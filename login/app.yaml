@@ -8,15 +8,22 @@ automatic_scaling:
   max_instances: 5
 
 env_variables:
-  SPRING_DATASOURCE_URL: jdbc:mysql://google/clientlogindb?cloudSqlInstance=clientapp-441220:us-east1:clientlogindb&socketFactory=com.google.cloud.sql.mysql.SocketFactory
+  SPRING_DATASOURCE_URL: jdbc:mysql://google/clientlogindb?cloudSqlInstance=clientapp-441220:us-east1:clientlogindb&socketFactory=com.google.cloud.sql.mysql.SocketFact
   SPRING_DATASOURCE_USERNAME: root
   SPRING_DATASOURCE_PASSWORD: (/u>ji;~E3Rm2@1h
   JAVA_HOME: "/usr/lib/jvm/java-17-openjdk"
 
 handlers:
-  - url: /api/.*  # Specify backend API routes
-    script: auto  # Routes that are handled by the backend
+  # Backend API routes handled by the Spring Boot app
+  - url: /api/.*
+    script: auto
 
-  - url: /.*  # This catches all other routes
-    static_dir: src/main/resources/static  # Serve React app's entry point
+  # Serve static files from the React build folder
+  - url: /static
+    static_dir: build/static
+
+  # Fallback to React's index.html for all other routes
+  - url: /.*
+    static_files: build/index.html
+    upload: build/index.html
     secure: always
