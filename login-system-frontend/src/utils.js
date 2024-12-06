@@ -1,7 +1,7 @@
 // helper function for making API calls
 
 export const fetchData = async (endpoint, method, body = null) => {
-    const BASE_URL = ''; // leave empty when using proxy in package.json
+    const BASE_URL = 'https://communitycompass-438103.ue.r.appspot.com'; // leave empty when using proxy in package.json
     console.log(`Fetching: ${BASE_URL}${endpoint}, Method: ${method}, Body:`, body);
 
     const headers = {
